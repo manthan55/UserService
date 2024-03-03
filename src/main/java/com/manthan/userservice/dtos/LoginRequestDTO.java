@@ -1,12 +1,11 @@
-package org.example.userservice.Dtos;
+package com.manthan.userservice.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class LoginRequestDto {
+@Setter
+public class LoginRequestDTO {
     private String email;
-
     private String password;
 }

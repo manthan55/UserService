@@ -1,16 +1,15 @@
-package org.example.userservice.Dtos;
+package com.manthan.userservice.dtos;
 
+import com.manthan.userservice.models.Role;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.userservice.Models.Role;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-public class UserDto {
+public class UserDTO {
     private String email;
-
     private Set<Role> roles = new HashSet<>();
 }

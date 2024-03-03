@@ -1,11 +1,11 @@
-package org.example.userservice.Models;
+package com.manthan.userservice.models;
 
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @Entity
 public class Role extends BaseModel {
     private String value;
