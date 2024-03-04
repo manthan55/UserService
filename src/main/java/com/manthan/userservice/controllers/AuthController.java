@@ -3,6 +3,8 @@ package com.manthan.userservice.controllers;
 import com.manthan.userservice.dtos.LoginRequestDTO;
 import com.manthan.userservice.dtos.SignUpRequestDTO;
 import com.manthan.userservice.dtos.UserDTO;
+import com.manthan.userservice.exceptions.SQLException;
+import com.manthan.userservice.exceptions.UserAlreadyExistsException;
 import com.manthan.userservice.models.User;
 import com.manthan.userservice.services.AuthService;
 import org.springframework.http.HttpStatus;
@@ -30,12 +32,20 @@ public class AuthController {
     @PostMapping("/auth/signup")
     public ResponseEntity<UserDTO> signUp(@RequestBody SignUpRequestDTO requestDTO){
         try{
+            // do something BEFORE saving user to DB
             User user = authService.signUp(requestDTO.getEmail(), requestDTO.getPassword());
             UserDTO userDTO = getUserDTO(user);
+            // do something AFTER saving user to DB --- send welcome email, etc
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
-        catch(Exception ex){
+        catch(UserAlreadyExistsException ex){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        catch(SQLException ex){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch(Exception ex){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.manthan.userservice.services;
 
+import com.manthan.userservice.exceptions.SQLException;
+import com.manthan.userservice.exceptions.UserAlreadyExistsException;
 import com.manthan.userservice.models.User;
 import com.manthan.userservice.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,9 +19,10 @@ public class AuthService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User signUp(String email, String password) {
+    public User signUp(String email, String password) throws UserAlreadyExistsException, SQLException {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) return userOptional.get();
+//        if (userOptional.isPresent()) throw new UserAlreadyExistsException();
 
         User user = new User();
         user.setEmail(email);
@@ -34,10 +37,8 @@ public class AuthService {
         if (userOptional.isEmpty()) return null;
 
         User user = userOptional.get();
-//        if (!user.getPassword().equals(password)) return null;
         // here order of params matter
         if (!bCryptPasswordEncoder.matches(password, user.getPassword())) return null;
-
 
         return user;
     }
