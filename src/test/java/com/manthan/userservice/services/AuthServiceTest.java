@@ -1,6 +1,8 @@
 package com.manthan.userservice.services;
 
+import com.manthan.userservice.models.Session;
 import com.manthan.userservice.models.User;
+import com.manthan.userservice.repositories.SessionRepository;
 import com.manthan.userservice.repositories.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,8 @@ public class AuthServiceTest {
 
     @MockBean
     UserRepository userRepository;
+    @MockBean
+    SessionRepository sessionRepository;
     @Captor
     private ArgumentCaptor<String> emailCaptor;
 
@@ -92,10 +96,10 @@ public class AuthServiceTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(userOptional);
 
         // Act
-        User user = authService.login(email,password);
+        String token = authService.login(email,password);
 
         // Assert
-        assertNull(user);
+        assertNull(token);
         verify(userRepository,times(1)).findByEmail(any(String.class));
         verify(userRepository).findByEmail(emailCaptor.capture());
         assertEquals(email,emailCaptor.getValue());
@@ -116,10 +120,10 @@ public class AuthServiceTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(userOptional);
 
         // Act
-        User user = authService.login(email,password);
+        String token = authService.login(email,password);
 
         // Assert
-        assertNull(user);
+        assertNull(token);
         verify(userRepository,times(1)).findByEmail(any(String.class));
         verify(userRepository).findByEmail(emailCaptor.capture());
         assertEquals(email,emailCaptor.getValue());
@@ -139,15 +143,14 @@ public class AuthServiceTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(userOptional);
 
         // Act
-        User user = authService.login(email,password);
+        String token = authService.login(email,password);
 
         // Assert
-        assertNotNull(user);
-        assertEquals(email,user.getEmail());
-        assertTrue(bCryptPasswordEncoder.matches(password, user.getPassword()));
+        assertNotNull(token);
         verify(userRepository,times(1)).findByEmail(any(String.class));
         verify(userRepository).findByEmail(emailCaptor.capture());
         assertEquals(email,emailCaptor.getValue());
+        verify(sessionRepository,times(1)).save(any(Session.class));
     }
 
 }

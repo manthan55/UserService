@@ -5,10 +5,13 @@ import com.manthan.userservice.dtos.SignUpRequestDTO;
 import com.manthan.userservice.dtos.UserDTO;
 import com.manthan.userservice.models.User;
 import com.manthan.userservice.services.AuthService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,13 +43,18 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginRequestDTO requestDTO){
+    public ResponseEntity<String> login(@RequestBody LoginRequestDTO requestDTO){
         try{
-            User user = authService.login(requestDTO.getEmail(), requestDTO.getPassword());
-            UserDTO userDTO = getUserDTO(user);
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            String token = authService.login(requestDTO.getEmail(), requestDTO.getPassword());
+
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            headers.add(HttpHeaders.SET_COOKIE, token);
+
+//            UserDTO userDTO = getUserDTO(user);
+            return new ResponseEntity<>(token, headers, HttpStatus.OK);
         }
         catch(Exception ex){
+            System.out.println(ex.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
