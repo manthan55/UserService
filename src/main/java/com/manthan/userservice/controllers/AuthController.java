@@ -3,6 +3,7 @@ package com.manthan.userservice.controllers;
 import com.manthan.userservice.dtos.LoginRequestDTO;
 import com.manthan.userservice.dtos.SignUpRequestDTO;
 import com.manthan.userservice.dtos.UserDTO;
+import com.manthan.userservice.dtos.ValidateTokenDTO;
 import com.manthan.userservice.models.User;
 import com.manthan.userservice.services.AuthService;
 import org.springframework.http.HttpHeaders;
@@ -56,6 +57,18 @@ public class AuthController {
         catch(Exception ex){
             System.out.println(ex.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/auth/validateToken")
+    public ResponseEntity<Boolean> validateToken(@RequestBody ValidateTokenDTO requestDTO){
+        try{
+            boolean isValid = authService.validateToken(requestDTO.getToken(), requestDTO.getUserId());
+            return new ResponseEntity<>(isValid, HttpStatus.OK);
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
     }
 

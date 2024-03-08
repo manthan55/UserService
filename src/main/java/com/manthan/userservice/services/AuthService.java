@@ -5,6 +5,9 @@ import com.manthan.userservice.models.SessionStatus;
 import com.manthan.userservice.models.User;
 import com.manthan.userservice.repositories.SessionRepository;
 import com.manthan.userservice.repositories.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.MacAlgorithm;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +26,13 @@ public class AuthService {
     private SessionRepository sessionRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    AuthService(UserRepository userRepository, SessionRepository sessionRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    private SecretKey secretKey;
+
+    AuthService(UserRepository userRepository, SessionRepository sessionRepository, BCryptPasswordEncoder bCryptPasswordEncoder, SecretKey secretKey) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.secretKey = secretKey;
     }
 
     public User signUp(String email, String password) {
@@ -61,18 +67,18 @@ public class AuthService {
         jwtData.put("roles",user.getRoles());
         long nowInMillis = System.currentTimeMillis();
         Date createdAt = new Date(nowInMillis);
-        Date expiringAt = new Date(nowInMillis+10000);
+        Date expiringAt = new Date(nowInMillis+1000000);
         jwtData.put("createdAt", createdAt);
         jwtData.put("expiryTime", expiringAt);
 
-        MacAlgorithm algorithm = Jwts.SIG.HS256;
-        SecretKey secret = algorithm.key().build();
-        System.out.println("secret : "+secret.getEncoded());
+//        MacAlgorithm algorithm = Jwts.SIG.HS256;
+//        SecretKey secret = algorithm.key().build();
+        System.out.println("secretKey : "+secretKey.getEncoded());
         String token = Jwts
                 .builder()
 //                .content(content)
                 .claims(jwtData)
-                .signWith(secret)
+                .signWith(secretKey)
                 .compact();
 
 //        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -91,5 +97,45 @@ public class AuthService {
 
 //        return new Pair<User,MultiValueMap<String,String>>(user,headers);
         return token;
+    }
+
+    public boolean validateToken(String token, Long userId){
+        Optional<Session> optionalSession = sessionRepository.findByTokenAndUser_Id(token, userId);
+        if (optionalSession.isEmpty()) return false;
+
+        Session session = optionalSession.get();
+        String storedToken = session.getToken();
+
+        JwtParser parser = Jwts
+                .parser()
+                .verifyWith(secretKey)
+                .build();
+
+        Claims claims = parser.parseSignedClaims(storedToken).getPayload();
+
+        long nowInMillis = System.currentTimeMillis();
+        long tokenExpiry = (long)claims.get("expiryTime");
+        System.out.println("nowInMillis : "+nowInMillis);
+        System.out.println("tokenExpiry : "+tokenExpiry);
+        if(nowInMillis > tokenExpiry){
+            System.out.println("token has expired");
+            return false;
+        }
+
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isEmpty()) return false;
+
+        User user = userOptional.get();
+        String email = user.getEmail().trim();
+        String tokenEmail = ((String)claims.get("email")).trim();
+        System.out.println("email : "+email);
+        System.out.println("tokenEmail : "+tokenEmail);
+        if(!email.equals(tokenEmail))
+        {
+            System.out.println("email does not match");
+            return false;
+        }
+
+        return true;
     }
 }
