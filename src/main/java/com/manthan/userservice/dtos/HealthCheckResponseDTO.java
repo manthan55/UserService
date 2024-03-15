@@ -8,6 +8,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class HealthCheckResponseDTO {
-    private String status;
+    private String version;
     private Date timestamp;
 }

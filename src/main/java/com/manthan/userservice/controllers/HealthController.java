@@ -13,7 +13,7 @@ public class HealthController {
     @GetMapping("/")
     public ResponseEntity<HealthCheckResponseDTO> healthCheck(){
         HealthCheckResponseDTO responseDTO = new HealthCheckResponseDTO();
-        responseDTO.setStatus("working");
+        responseDTO.setVersion("v4.0");
         responseDTO.setTimestamp(new Date());
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
