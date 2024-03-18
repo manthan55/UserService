@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class AuthServiceTest {
     @Autowired
-    AuthService authService;
+    IAuthService authService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

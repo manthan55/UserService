@@ -5,7 +5,8 @@ import com.manthan.userservice.dtos.SignUpRequestDTO;
 import com.manthan.userservice.dtos.UserDTO;
 import com.manthan.userservice.dtos.ValidateTokenDTO;
 import com.manthan.userservice.models.User;
-import com.manthan.userservice.services.AuthService;
+import com.manthan.userservice.services.IAuthService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -25,9 +26,9 @@ public class AuthController {
     // logout
     // forgetPassword
 
-    private AuthService authService;
+    private IAuthService authService;
 
-    AuthController(AuthService authService){
+    AuthController(/*@Qualifier("AuthService")*/ IAuthService authService){
         this.authService = authService;
     }
 

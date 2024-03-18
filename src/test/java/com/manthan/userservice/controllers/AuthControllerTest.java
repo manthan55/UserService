@@ -3,7 +3,7 @@ package com.manthan.userservice.controllers;
 import com.manthan.userservice.dtos.SignUpRequestDTO;
 import com.manthan.userservice.dtos.UserDTO;
 import com.manthan.userservice.models.User;
-import com.manthan.userservice.services.AuthService;
+import com.manthan.userservice.services.IAuthService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -17,7 +17,7 @@ public class AuthControllerTest {
     AuthController authController;
 
     @MockBean
-    AuthService authService;
+    IAuthService authService;
 
     @Captor
     private ArgumentCaptor<Long> emailCaptor;

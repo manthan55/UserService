@@ -20,8 +20,9 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@Service
-public class AuthService {
+//@Service("AuthService")
+//@Service
+public class AuthService implements IAuthService {
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
