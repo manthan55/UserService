@@ -1,0 +1,42 @@
+#server:
+#  port: "9000"
+
+spring:
+  profiles:
+    # https://codesarray.com/view/Multiple-application-properties-file-in-spring-boot
+    active: "dev"
+    default: "dev"
+  jpa:
+    hibernate:
+      ddl-auto: "update"
+    show-sql: "true"
+  datasource:
+    url: "jdbc:mysql://localhost:3306/userservice"
+    username: "root"
+    password: "root"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+loggin:
+  level:
+    org:
+      springframework:
+        security: "trace"
+
+#Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,env,beans"
+  info:
+    env:
+      enabled: "true"
+
+#Actuator
+# /actuator/info
+info:
+  application:
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
+    anything: "absolutely anything"
