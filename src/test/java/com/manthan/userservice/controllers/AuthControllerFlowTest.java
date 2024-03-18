@@ -33,7 +33,7 @@ public class AuthControllerFlowTest {
         // login
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
         loginRequestDTO.setEmail(email);
-        loginRequestDTO.setPassword("password");
+        loginRequestDTO.setPassword(password);
         ResponseEntity<String> loginResponse = authController.login(loginRequestDTO);
         assertNotNull(loginResponse.getBody());
 

@@ -57,6 +57,7 @@ public class AuthServiceStub implements IAuthService {
     public String login(String email, String password) {
         String token = "sometoken";
         User user = findUserByEmail(email);
+        if(!user.getPassword().equals(password)) return null;
         Session session = new Session();
         session.setToken(token);
         session.setUser(user);
