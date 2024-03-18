@@ -1,10 +1,16 @@
 package com.manthan.userservice.controllers;
 
+import com.manthan.userservice.dtos.LoginRequestDTO;
 import com.manthan.userservice.dtos.SignUpRequestDTO;
+import com.manthan.userservice.dtos.UserDTO;
+import com.manthan.userservice.dtos.ValidateTokenDTO;
+import com.manthan.userservice.models.User;
 import com.manthan.userservice.services.IAuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class AuthControllerFlowTest {
@@ -20,9 +26,22 @@ public class AuthControllerFlowTest {
         requestDTO.setEmail(email);
         requestDTO.setPassword(password);
 
-        // Act
-        authController.signUp(requestDTO);
+        // signup
+        ResponseEntity<UserDTO> signedUpUser = authController.signUp(requestDTO);
+        assertEquals(email, signedUpUser.getBody().getEmail());
 
-        // Assert
+        // login
+        LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
+        loginRequestDTO.setEmail(email);
+        loginRequestDTO.setPassword("password");
+        ResponseEntity<String> loginResponse = authController.login(loginRequestDTO);
+        assertNotNull(loginResponse.getBody());
+
+        // validate token
+        ValidateTokenDTO validateTokenDTO = new ValidateTokenDTO();
+        validateTokenDTO.setToken(loginResponse.getBody());
+        validateTokenDTO.setUserId(1L);
+        ResponseEntity<Boolean> validateTokenResponse = authController.validateToken(validateTokenDTO);
+        assertTrue(validateTokenResponse.getBody());
     }
 }
