@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: "jdbc:mysql://scaler-project-module-db.c8flxv6z8gbz.us-east-1.rds.amazonaws.com/userservice"
+    url: "jdbc:mysql://scaler-project-module-db.c8flxv6z8gbz.us-east-1.rds.amazonaws.com/userservice?createDatabaseIfNotExist=true"
     username: "admin"
     password: "adminadmin"

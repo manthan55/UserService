@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/userservice"
+    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
     username: "root"
     password: "root"

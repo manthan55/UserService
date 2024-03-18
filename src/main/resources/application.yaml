@@ -11,7 +11,7 @@ spring:
       ddl-auto: "update"
     show-sql: "true"
   datasource:
-    url: "jdbc:mysql://localhost:3306/userservice"
+    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
     username: "root"
     password: "root"
     driver-class-name: "com.mysql.cj.jdbc.Driver"
