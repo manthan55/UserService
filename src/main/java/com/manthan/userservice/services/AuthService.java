@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 //@Service("AuthService")
-//@Service
+@Service
 public class AuthService implements IAuthService {
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
