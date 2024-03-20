@@ -2,6 +2,8 @@
 #  port: "9000"
 
 spring:
+  application:
+    name: "UserService-CustomName"
   profiles:
     # https://codesarray.com/view/Multiple-application-properties-file-in-spring-boot
     active: "dev"
@@ -40,3 +42,6 @@ info:
     description: @project.description@
     version: @project.version@
     anything: "absolutely anything"
+#    we can read/reference any property already declared above
+#    https://www.mscharhag.com/spring/property-references
+    applicationName: ${spring.application.name}
