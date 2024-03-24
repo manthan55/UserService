@@ -1,9 +1,9 @@
 server:
- port: ${SERVER_PORT}
+  port: ${SERVER_PORT}
 
 spring:
   application:
-    name: "UserService-CustomName"
+    name: "UserService"
   profiles:
     # https://codesarray.com/view/Multiple-application-properties-file-in-spring-boot
     active: "dev"
