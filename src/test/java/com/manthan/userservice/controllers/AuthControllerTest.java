@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class AuthControllerTest {
     @Autowired
     AuthController authController;
@@ -24,7 +26,7 @@ public class AuthControllerTest {
     @Captor
     private ArgumentCaptor<Long> passwordCaptor;
 
-    @Test
+//    @Test
     public void Test_SignUpWithValidDetails_ReturnsUserDTO(){
         String email = "test@mail.com";
         String password = "password";

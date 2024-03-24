@@ -3,3 +3,13 @@ spring:
     url: "jdbc:mysql://scaler-project-module-db.c8flxv6z8gbz.us-east-1.rds.amazonaws.com/userservice?createDatabaseIfNotExist=true"
     username: "admin"
     password: "adminadmin"
+
+
+# Eureka Client
+# https://cloud.spring.io/spring-cloud-netflix/reference/html/#spring-cloud-eureka-server-standalone-mode
+eureka:
+  client:
+    register-with-eureka: "true"
+    fetch-registry: "true"
+    serviceUrl:
+      defaultZone: "https://servicediscovery-manthan.azurewebsites.net/eureka/"

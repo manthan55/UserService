@@ -1,5 +1,5 @@
-server:
-  port: ${SERVER_PORT}
+#server:
+#  port: ${SERVER_PORT}
 
 spring:
   application:
@@ -47,7 +47,7 @@ info:
     applicationName: ${spring.application.name}
 
 
-
+# Eureka Client
 # https://cloud.spring.io/spring-cloud-netflix/reference/html/#spring-cloud-eureka-server-standalone-mode
 eureka:
   client:
