@@ -22,6 +22,7 @@ public class UserController {
     public UserDTO getUser(@PathVariable Long id){
         System.out.println("getUser called with id : "+id);
         User user = userService.getUser(id);
+        if(user == null) return null;
         return getUserDTO(user);
     }
 

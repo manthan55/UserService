@@ -1,5 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
-    username: "root"
-    password: "root"
+#    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
+#    username: "root"
+#    password: "root"
+    url: "jdbc:sqlite:userservice_dev_DB.sqlite"
+    username: "sa"
+    password: "sa"

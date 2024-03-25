@@ -13,10 +13,14 @@ spring:
       ddl-auto: "update"
     show-sql: "true"
   datasource:
-    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
-    username: "root"
-    password: "root"
-    driver-class-name: "com.mysql.cj.jdbc.Driver"
+#    url: "jdbc:mysql://localhost:3306/userservice?createDatabaseIfNotExist=true"
+#    username: "root"
+#    password: "root"
+#    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:sqlite:userservice_DB.sqlite"
+    username: "sa"
+    password: "sa"
+    driver-class-name: "org.sqlite.JDBC"
 
 logging:
   level:
