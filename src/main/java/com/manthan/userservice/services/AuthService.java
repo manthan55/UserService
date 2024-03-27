@@ -1,5 +1,10 @@
 package com.manthan.userservice.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.manthan.userservice.clients.KafkaProducerClient;
+import com.manthan.userservice.dtos.SendEmailMessageDTO;
+import com.manthan.userservice.dtos.UserDTO;
 import com.manthan.userservice.models.Session;
 import com.manthan.userservice.models.SessionStatus;
 import com.manthan.userservice.models.User;
@@ -26,14 +31,17 @@ public class AuthService implements IAuthService {
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private SecretKey secretKey;
+    private KafkaProducerClient kafkaProducerClient;
+    private ObjectMapper objectMapper;
 
-    AuthService(UserRepository userRepository, SessionRepository sessionRepository, BCryptPasswordEncoder bCryptPasswordEncoder, SecretKey secretKey) {
+    AuthService(UserRepository userRepository, SessionRepository sessionRepository, BCryptPasswordEncoder bCryptPasswordEncoder, SecretKey secretKey, KafkaProducerClient kafkaProducerClient, ObjectMapper objectMapper) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.secretKey = secretKey;
+        this.kafkaProducerClient = kafkaProducerClient;
+        this.objectMapper = objectMapper;
     }
 
     public User signUp(String email, String password) {
@@ -43,8 +51,20 @@ public class AuthService implements IAuthService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(bCryptPasswordEncoder.encode(password));
-
         User savedUser = userRepository.save(user);
+
+        // put message in queue
+        SendEmailMessageDTO sendEmailMessageDTO = new SendEmailMessageDTO();
+        sendEmailMessageDTO.setTo(email);
+        sendEmailMessageDTO.setFrom("from");
+        sendEmailMessageDTO.setSubject("some random subject");
+        sendEmailMessageDTO.setBody("some random body");
+        try {
+            kafkaProducerClient.sendMessage("sendEmail",objectMapper.writeValueAsString(sendEmailMessageDTO));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         return savedUser;
     }
 

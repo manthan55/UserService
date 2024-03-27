@@ -120,6 +120,18 @@
 		</dependency>
 
 
+<!--		Kafka -->
+<!--		#  how to setup local kafka broker in windows-->
+<!--		#  https://sahilali.medium.com/installing-apache-kafka-on-windows-10-and-running-your-first-kafka-process-ade2b755aa40-->
+		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+
+
+
 
 	</dependencies>
 

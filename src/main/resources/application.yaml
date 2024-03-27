@@ -22,6 +22,12 @@ spring:
     password: "sa"
     driver-class-name: "org.sqlite.JDBC"
 
+# Kafka
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    consumer:
+      group-id: "myGroup"
+
 logging:
   level:
     org:
@@ -59,3 +65,4 @@ eureka:
     fetch-registry: "true"
     serviceUrl:
       defaultZone: "http://localhost:8761/eureka/"
+
