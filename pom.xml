@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.manthan</groupId>
 	<artifactId>UserService</artifactId>
-	<version>9.0</version>
+	<version>10.0</version>
 	<name>UserService</name>
 	<description>UserService</description>
 	<properties>
